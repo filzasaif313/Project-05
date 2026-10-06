@@ -8,10 +8,6 @@ import {
   Sliders, 
   CheckCircle2, 
   AlertCircle,
-  Truck,
-  Package,
-  Layers,
-  Sparkles,
   ArrowRight
 } from 'lucide-react';
 
@@ -27,11 +23,11 @@ export default function ManualFormsView({ items, onStockUpdated }) {
   const selectedItem = items.find(i => i.id === parseInt(selectedItemId, 10)) || items[0];
 
   const tabs = [
-    { id: 'RECEIVED', label: 'Receive Goods', icon: ArrowDownToLine, desc: 'Incoming deliveries from suppliers' },
-    { id: 'SOLD', label: 'Point of Sale', icon: ArrowUpFromLine, desc: 'Sales to mall shoppers' },
-    { id: 'DAMAGED', label: 'Damaged / Write-off', icon: AlertOctagon, desc: 'Broken, expired or defective' },
-    { id: 'CUSTOMER_RETURN', label: 'Customer Return', icon: RotateCcw, desc: 'Returned items put back to inventory' },
-    { id: 'CORRECTION', label: 'Count Adjustment', icon: Sliders, desc: 'Audit physical count difference' }
+    { id: 'RECEIVED', label: 'Receive Goods', icon: ArrowDownToLine, desc: 'Deliveries from suppliers' },
+    { id: 'SOLD', label: 'Point of Sale', icon: ArrowUpFromLine, desc: 'Sales to shoppers' },
+    { id: 'DAMAGED', label: 'Damaged / Write-off', icon: AlertOctagon, desc: 'Broken or defective' },
+    { id: 'CUSTOMER_RETURN', label: 'Customer Return', icon: RotateCcw, desc: 'Returned items' },
+    { id: 'CORRECTION', label: 'Count Adjustment', icon: Sliders, desc: 'Physical audit count' }
   ];
 
   // Live Math preview
@@ -91,23 +87,23 @@ export default function ManualFormsView({ items, onStockUpdated }) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-5">
+    <div className="max-w-3xl mx-auto space-y-4">
       
       {/* Header Info */}
-      <div className="bg-[#171A18] border border-white/[0.08] p-5 rounded-2xl">
+      <div className="bg-[#1C1917] border border-[#38332E] p-5 rounded-2xl">
         <div className="flex items-center gap-2 mb-1">
-          <span className="w-2 h-2 rounded-full bg-[#8FAF87]" />
-          <span className="text-[11px] font-mono text-[#8FAF87] uppercase font-bold tracking-wider">
-            Operational Desk
+          <span className="w-2 h-2 rounded-full bg-[#F59E0B]" />
+          <span className="text-[10px] font-mono text-[#F59E0B] uppercase font-bold tracking-wider">
+            OPERATIONAL ENTRY TERMINAL
           </span>
         </div>
-        <h2 className="text-xl font-extrabold text-[#F1EDE3] tracking-tight">Manual Stock Operations</h2>
-        <p className="text-xs text-[#A8A295] mt-1">
-          Direct physical stock movement entry. All transactions generate immediate audit ledger entries.
+        <h2 className="text-xl font-extrabold text-[#FAFAF9] tracking-tight">Manual Stock Operations</h2>
+        <p className="text-xs text-[#A8A29E] mt-1">
+          Direct physical stock movement entry. All transactions generate immediate audit ledger entries in PostgreSQL.
         </p>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 mt-4 pt-4 border-t border-white/[0.06]">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 mt-4 pt-3.5 border-t border-[#38332E]">
           {tabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -120,12 +116,12 @@ export default function ManualFormsView({ items, onStockUpdated }) {
                 }}
                 className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl border text-center transition-all ${
                   isActive
-                    ? 'bg-[#1E221F] border-[#8FAF87]/50 text-[#F1EDE3] shadow-sm'
-                    : 'bg-[#0B0D0C] border-white/[0.06] text-[#A8A295] hover:text-[#F1EDE3] hover:bg-[#171A18]'
+                    ? 'bg-[#292524] border-[#F59E0B]/60 text-[#FAFAF9] shadow-sm'
+                    : 'bg-[#0C0A09] border-[#38332E] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#292524]/60'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-[#8FAF87]' : 'text-[#7C776C]'}`} />
-                <span className="text-[11px] font-semibold tracking-tight">{tab.label}</span>
+                <Icon className={`w-4 h-4 ${isActive ? 'text-[#F59E0B]' : 'text-[#78716C]'}`} />
+                <span className="text-[11px] font-mono font-semibold tracking-tight">{tab.label}</span>
               </button>
             );
           })}
@@ -133,18 +129,18 @@ export default function ManualFormsView({ items, onStockUpdated }) {
       </div>
 
       {/* Operation Form Card */}
-      <div className="bg-[#171A18] border border-white/[0.08] p-5 rounded-2xl shadow-sm">
+      <div className="bg-[#1C1917] border border-[#38332E] p-5 rounded-2xl shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-4">
           
           {/* Item Selector */}
           <div>
-            <label className="text-[11px] font-mono uppercase text-[#A8A295] block mb-1.5">
-              Select Item
+            <label className="text-[11px] font-mono uppercase text-[#A8A29E] block mb-1.5">
+              Select Catalog SKU
             </label>
             <select
               value={selectedItemId}
               onChange={(e) => setSelectedItemId(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-[#0B0D0C] border border-white/10 rounded-xl text-xs text-[#F1EDE3] focus:border-[#8FAF87] focus:outline-none"
+              className="w-full px-3.5 py-2.5 bg-[#0C0A09] border border-[#38332E] rounded-xl text-xs text-[#FAFAF9] font-mono focus:border-[#F59E0B] focus:outline-none"
             >
               {items.map(item => (
                 <option key={item.id} value={item.id}>
@@ -156,25 +152,25 @@ export default function ManualFormsView({ items, onStockUpdated }) {
 
           {/* Real-time Math Preview Bar */}
           {selectedItem && (
-            <div className="bg-[#0B0D0C] border border-white/[0.07] p-3.5 rounded-xl flex items-center justify-between text-xs">
+            <div className="bg-[#0C0A09] border border-[#38332E] p-3.5 rounded-xl flex items-center justify-between text-xs">
               <div>
-                <span className="text-[10px] text-[#A8A295] uppercase tracking-wider block">Current Stock</span>
-                <span className="text-base font-mono font-bold text-[#F1EDE3]">{currentStock}</span>
+                <span className="text-[10px] text-[#A8A29E] uppercase font-mono tracking-wider block">Current Stock</span>
+                <span className="text-base font-mono font-bold text-[#FAFAF9]">{currentStock}</span>
               </div>
 
               <div className="text-center font-mono text-sm font-bold">
-                <span className={plannedDelta > 0 ? 'text-[#8FAF87]' : plannedDelta < 0 ? 'text-[#C65A4A]' : 'text-[#A8A295]'}>
+                <span className={plannedDelta > 0 ? 'text-[#FBBF24]' : plannedDelta < 0 ? 'text-[#EF4444]' : 'text-[#A8A29E]'}>
                   {plannedDelta > 0 ? `+${plannedDelta}` : plannedDelta}
                 </span>
-                <span className="text-[10px] text-[#7C776C] block font-sans">delta</span>
+                <span className="text-[10px] text-[#78716C] block font-mono">delta</span>
               </div>
 
-              <ArrowRight className="w-4 h-4 text-[#7C776C]" />
+              <ArrowRight className="w-4 h-4 text-[#78716C]" />
 
               <div className="text-right">
-                <span className="text-[10px] text-[#A8A295] uppercase tracking-wider block">Projected Stock</span>
+                <span className="text-[10px] text-[#A8A29E] uppercase font-mono tracking-wider block">Projected Stock</span>
                 <span className={`text-base font-mono font-black ${
-                  projectedStock < 0 ? 'text-[#C65A4A]' : 'text-[#8FAF87]'
+                  projectedStock < 0 ? 'text-[#EF4444]' : 'text-[#FBBF24]'
                 }`}>
                   {projectedStock}
                 </span>
@@ -185,7 +181,7 @@ export default function ManualFormsView({ items, onStockUpdated }) {
           {/* Input: Quantity (or Count for Correction) */}
           {activeTab === 'CORRECTION' ? (
             <div>
-              <label className="text-[11px] font-mono uppercase text-[#A8A295] block mb-1.5">
+              <label className="text-[11px] font-mono uppercase text-[#A8A29E] block mb-1.5">
                 New Counted Physical Units
               </label>
               <input
@@ -195,12 +191,12 @@ export default function ManualFormsView({ items, onStockUpdated }) {
                 value={countValue}
                 onChange={(e) => setCountValue(e.target.value)}
                 placeholder="e.g. 50"
-                className="w-full px-3.5 py-2.5 bg-[#0B0D0C] border border-white/10 rounded-xl text-xs text-[#F1EDE3] font-mono focus:border-[#8FAF87] focus:outline-none"
+                className="w-full px-3.5 py-2.5 bg-[#0C0A09] border border-[#38332E] rounded-xl text-xs text-[#FAFAF9] font-mono focus:border-[#F59E0B] focus:outline-none"
               />
             </div>
           ) : (
             <div>
-              <label className="text-[11px] font-mono uppercase text-[#A8A295] block mb-1.5">
+              <label className="text-[11px] font-mono uppercase text-[#A8A29E] block mb-1.5">
                 Quantity Units
               </label>
               <input
@@ -210,14 +206,14 @@ export default function ManualFormsView({ items, onStockUpdated }) {
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 placeholder="e.g. 10"
-                className="w-full px-3.5 py-2.5 bg-[#0B0D0C] border border-white/10 rounded-xl text-xs text-[#F1EDE3] font-mono focus:border-[#8FAF87] focus:outline-none"
+                className="w-full px-3.5 py-2.5 bg-[#0C0A09] border border-[#38332E] rounded-xl text-xs text-[#FAFAF9] font-mono focus:border-[#F59E0B] focus:outline-none"
               />
             </div>
           )}
 
           {/* Supplier or Reason */}
           <div>
-            <label className="text-[11px] font-mono uppercase text-[#A8A295] block mb-1.5">
+            <label className="text-[11px] font-mono uppercase text-[#A8A29E] block mb-1.5">
               {activeTab === 'RECEIVED' ? 'Supplier Name (e.g. Ali Traders)' : 'Reason / Reference Note'}
             </label>
             <input
@@ -226,7 +222,7 @@ export default function ManualFormsView({ items, onStockUpdated }) {
               value={supplierOrReason}
               onChange={(e) => setSupplierOrReason(e.target.value)}
               placeholder={activeTab === 'RECEIVED' ? 'e.g. Ali Traders, Lahore Wholesale' : 'e.g. Counter sales batch, Customer return'}
-              className="w-full px-3.5 py-2.5 bg-[#0B0D0C] border border-white/10 rounded-xl text-xs text-[#F1EDE3] focus:border-[#8FAF87] focus:outline-none"
+              className="w-full px-3.5 py-2.5 bg-[#0C0A09] border border-[#38332E] rounded-xl text-xs text-[#FAFAF9] font-mono focus:border-[#F59E0B] focus:outline-none"
             />
           </div>
 
@@ -234,18 +230,18 @@ export default function ManualFormsView({ items, onStockUpdated }) {
           {resultStatus && (
             <div className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs animate-fade-in ${
               resultStatus.type === 'success'
-                ? 'bg-[#8FAF87]/15 border-[#8FAF87]/35 text-[#F1EDE3]'
-                : 'bg-[#C65A4A]/15 border-[#C65A4A]/35 text-[#C65A4A]'
+                ? 'bg-[#FBBF24]/15 border-[#FBBF24]/35 text-[#FAFAF9]'
+                : 'bg-[#EF4444]/15 border-[#EF4444]/35 text-[#EF4444]'
             }`}>
               {resultStatus.type === 'success' ? (
-                <CheckCircle2 className="w-4 h-4 text-[#8FAF87] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#FBBF24] shrink-0 mt-0.5" />
               ) : (
-                <AlertCircle className="w-4 h-4 text-[#C65A4A] shrink-0 mt-0.5" />
+                <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
               )}
               <div>
                 <p className="font-bold">{resultStatus.message}</p>
                 {resultStatus.oldStock != null && (
-                  <p className="text-[11px] text-[#A8A295] font-mono mt-0.5">
+                  <p className="text-[11px] text-[#A8A29E] font-mono mt-0.5">
                     Updated in PostgreSQL Ledger: {resultStatus.oldStock} → {resultStatus.newStock}
                   </p>
                 )}
@@ -258,13 +254,13 @@ export default function ManualFormsView({ items, onStockUpdated }) {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-2.5 rounded-xl bg-[#8FAF87] hover:bg-[#A5C49E] text-[#0B0D0C] font-mono text-xs font-bold transition shadow-md shadow-[#8FAF87]/15 flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#F59E0B] hover:bg-[#D97706] text-[#0C0A09] font-mono text-xs font-bold transition shadow-sm flex items-center justify-center gap-2"
             >
               {submitting ? (
                 <span>Recording in Ledger...</span>
               ) : (
                 <>
-                  <CheckCircle2 className="w-4 h-4 text-[#0B0D0C]" />
+                  <CheckCircle2 className="w-4 h-4" />
                   <span>Execute Stock Movement</span>
                 </>
               )}

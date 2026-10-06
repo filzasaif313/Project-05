@@ -56,12 +56,35 @@ CREATE TABLE IF NOT EXISTS price_history (
 CREATE TABLE IF NOT EXISTS pending_confirmations (
     id UUID PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
-    item_id INTEGER NOT NULL REFERENCES items(id) ON DELETE CASCADE,
-    quantity_change INTEGER NOT NULL,
-    movement_type VARCHAR(30) NOT NULL CHECK (movement_type IN ('RECEIVED', 'SOLD', 'DAMAGED', 'CORRECTION', 'CUSTOMER_RETURN')),
-    supplier_or_reason VARCHAR(255) NOT NULL,
+    item_id INTEGER REFERENCES items(id) ON DELETE CASCADE,
+    quantity_change INTEGER,
+    movement_type VARCHAR(30) CHECK (movement_type IN ('RECEIVED', 'SOLD', 'DAMAGED', 'CORRECTION', 'CUSTOMER_RETURN', 'CREATE_ITEM', 'UPDATE_ITEM', 'DELETE_ITEM')),
+    supplier_or_reason VARCHAR(255),
+    action_type VARCHAR(30) DEFAULT 'STOCK_MOVEMENT',
+    payload JSONB DEFAULT '{}',
     status VARCHAR(20) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'CONFIRMED', 'CANCELLED', 'EXPIRED')),
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 6. Chat Conversations Table (Persistent User Sessions)
+CREATE TABLE IF NOT EXISTS chat_conversations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL DEFAULT 'New Conversation',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 7. Chat Messages Table (Persistent Conversation History)
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    conversation_id UUID NOT NULL REFERENCES chat_conversations(id) ON DELETE CASCADE,
+    sender VARCHAR(20) NOT NULL CHECK (sender IN ('user', 'ai')),
+    text TEXT NOT NULL,
+    card JSONB DEFAULT NULL,
+    chart JSONB DEFAULT NULL,
+    is_unavailable BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -70,3 +93,5 @@ CREATE INDEX IF NOT EXISTS idx_items_section ON items(section);
 CREATE INDEX IF NOT EXISTS idx_movements_item ON stock_movements(item_id);
 CREATE INDEX IF NOT EXISTS idx_movements_created ON stock_movements(created_at);
 CREATE INDEX IF NOT EXISTS idx_pending_user_status ON pending_confirmations(user_id, status);
+CREATE INDEX IF NOT EXISTS idx_chat_conversations_user ON chat_conversations(user_id, updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_conv ON chat_messages(conversation_id, created_at ASC);

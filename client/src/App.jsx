@@ -16,9 +16,7 @@ import {
   ArrowLeftRight, 
   History, 
   LineChart, 
-  ShieldCheck,
-  RefreshCw,
-  Warehouse
+  RefreshCw
 } from 'lucide-react';
 
 function AppContent() {
@@ -84,8 +82,8 @@ function AppContent() {
   // Auth Loading Screen
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-[#0B0D0C] flex flex-col items-center justify-center text-[#A8A295] space-y-3 font-mono">
-        <div className="w-8 h-8 border-2 border-[#8FAF87] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#0C0A09] flex flex-col items-center justify-center text-[#A8A29E] space-y-3 font-mono">
+        <div className="w-8 h-8 border-2 border-[#F59E0B] border-t-transparent rounded-full animate-spin" />
         <p className="text-xs">Initializing StockSense Terminal...</p>
       </div>
     );
@@ -106,7 +104,7 @@ function AppContent() {
 
   // 2. Authenticated Store Terminal Experience
   return (
-    <div className="min-h-screen bg-[#0B0D0C] text-[#F1EDE3] flex flex-col relative selection:bg-[#8FAF87] selection:text-[#0B0D0C]">
+    <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] flex flex-col relative selection:bg-[#F59E0B] selection:text-[#0C0A09]">
       
       {/* Header with Store Pulse identity and Authenticated User */}
       <Header
@@ -120,10 +118,10 @@ function AppContent() {
       />
 
       {/* Main Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 relative z-10 space-y-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-5 relative z-10 space-y-5">
         
         {/* Navigation Tabs Bar */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 gap-2 overflow-x-auto no-scrollbar">
+        <div className="flex items-center justify-between border-b border-[#38332E] pb-3 gap-2 overflow-x-auto no-scrollbar">
           
           <div className="flex items-center gap-1.5 sm:gap-2">
             
@@ -132,11 +130,11 @@ function AppContent() {
               onClick={() => setActiveTab('DASHBOARD')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 activeTab === 'DASHBOARD'
-                  ? 'bg-[#8FAF87] text-[#0B0D0C] shadow-md shadow-[#8FAF87]/20'
-                  : 'text-[#A8A295] hover:text-[#F1EDE3] hover:bg-[#171A18]'
+                  ? 'bg-[#292524] text-[#FAFAF9] border border-[#F59E0B]/50 shadow-sm'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#1C1917]'
               }`}
             >
-              <Activity className="w-4 h-4" />
+              <Activity className={`w-4 h-4 ${activeTab === 'DASHBOARD' ? 'text-[#F59E0B]' : 'text-[#78716C]'}`} />
               <span>Store Pulse</span>
             </button>
 
@@ -145,11 +143,11 @@ function AppContent() {
               onClick={() => setActiveTab('CATALOG')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 activeTab === 'CATALOG'
-                  ? 'bg-[#171A18] text-[#F1EDE3] border border-white/20 shadow-md'
-                  : 'text-[#A8A295] hover:text-[#F1EDE3] hover:bg-[#171A18]'
+                  ? 'bg-[#292524] text-[#FAFAF9] border border-[#F59E0B]/50 shadow-sm'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#1C1917]'
               }`}
             >
-              <Boxes className="w-4 h-4 text-[#8FAF87]" />
+              <Boxes className={`w-4 h-4 ${activeTab === 'CATALOG' ? 'text-[#F59E0B]' : 'text-[#78716C]'}`} />
               <span>Inventory Catalog</span>
             </button>
 
@@ -158,11 +156,11 @@ function AppContent() {
               onClick={() => setActiveTab('MANUAL_FORMS')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 activeTab === 'MANUAL_FORMS'
-                  ? 'bg-[#171A18] text-[#F1EDE3] border border-white/20 shadow-md'
-                  : 'text-[#A8A295] hover:text-[#F1EDE3] hover:bg-[#171A18]'
+                  ? 'bg-[#292524] text-[#FAFAF9] border border-[#F59E0B]/50 shadow-sm'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#1C1917]'
               }`}
             >
-              <ArrowLeftRight className="w-4 h-4 text-[#B8794A]" />
+              <ArrowLeftRight className={`w-4 h-4 ${activeTab === 'MANUAL_FORMS' ? 'text-[#F59E0B]' : 'text-[#78716C]'}`} />
               <span>Stock Operations</span>
             </button>
 
@@ -171,11 +169,11 @@ function AppContent() {
               onClick={() => setActiveTab('HISTORY')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 activeTab === 'HISTORY'
-                  ? 'bg-[#171A18] text-[#F1EDE3] border border-white/20 shadow-md'
-                  : 'text-[#A8A295] hover:text-[#F1EDE3] hover:bg-[#171A18]'
+                  ? 'bg-[#292524] text-[#FAFAF9] border border-[#F59E0B]/50 shadow-sm'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#1C1917]'
               }`}
             >
-              <History className="w-4 h-4 text-[#A8A295]" />
+              <History className={`w-4 h-4 ${activeTab === 'HISTORY' ? 'text-[#F59E0B]' : 'text-[#78716C]'}`} />
               <span>Audit History</span>
             </button>
 
@@ -185,14 +183,14 @@ function AppContent() {
                 onClick={() => setActiveTab('FINANCIALS')}
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                   activeTab === 'FINANCIALS'
-                    ? 'bg-[#171A18] text-[#8FAF87] border border-[#8FAF87]/40 shadow-md shadow-[#8FAF87]/10'
-                    : 'text-[#A8A295] hover:text-[#8FAF87] hover:bg-[#171A18]'
+                    ? 'bg-[#292524] text-[#FBBF24] border border-[#FBBF24]/40 shadow-sm'
+                    : 'text-[#A8A29E] hover:text-[#FBBF24] hover:bg-[#1C1917]'
                 }`}
               >
-                <LineChart className="w-4 h-4 text-[#8FAF87]" />
+                <LineChart className="w-4 h-4 text-[#FBBF24]" />
                 <span>Financial Reports</span>
-                <span className="px-1.5 py-0.2 text-[9px] rounded bg-[#8FAF87]/15 text-[#8FAF87] border border-[#8FAF87]/30 uppercase">
-                  Mgr
+                <span className="px-1.5 py-0.2 text-[9px] rounded bg-[#FBBF24]/15 text-[#FBBF24] border border-[#FBBF24]/30 uppercase font-mono">
+                  MGR
                 </span>
               </button>
             )}
@@ -202,10 +200,10 @@ function AppContent() {
           {/* Quick Refresh Button */}
           <button
             onClick={triggerRefresh}
-            className="p-2 rounded-xl bg-[#171A18] hover:bg-[#1E221F] border border-white/[0.08] text-[#A8A295] hover:text-[#F1EDE3] transition"
+            className="p-2 rounded-xl bg-[#1C1917] hover:bg-[#292524] border border-[#38332E] text-[#A8A29E] hover:text-[#FAFAF9] transition shadow-sm"
             title="Refresh Live Store Data"
           >
-            <RefreshCw className={`w-4 h-4 ${loadingItems ? 'animate-spin text-[#8FAF87]' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${loadingItems ? 'animate-spin text-[#F59E0B]' : ''}`} />
           </button>
 
         </div>
@@ -253,8 +251,8 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto py-5 border-t border-white/[0.06] text-center text-[11px] font-mono text-[#7C776C] z-10">
-        <p>StockSense • After-Hours Terminal • Nowshera Shopping Mall Intelligence</p>
+      <footer className="mt-auto py-5 border-t border-[#38332E] text-center text-[11px] font-mono text-[#78716C] z-10">
+        <p>StockSense • Retail Command Terminal • Nowshera Shopping Mall Intelligence</p>
       </footer>
 
       {/* Store Brain AI Drawer */}

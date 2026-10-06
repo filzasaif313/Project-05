@@ -164,6 +164,108 @@ router.post('/confirm', authenticateToken, async (req, res) => {
       return res.status(403).json({ error: 'UNAUTHORIZED_CONFIRM', message: 'Only the user who initiated this draft can confirm it.' });
     }
 
+    const actionType = draft.action_type || 'STOCK_MOVEMENT';
+    const payload = typeof draft.payload === 'string' ? JSON.parse(draft.payload || '{}') : (draft.payload || {});
+
+    // Action Type 1: CREATE_ITEM (Add new product)
+    if (actionType === 'CREATE_ITEM') {
+      if (req.user.role !== 'MANAGER') {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Only Managers can add new products.' });
+      }
+
+      const { name, section, total_stock = 0, low_stock_threshold = 5, front_display = 'Shelf A1', back_store_room = 'Rack 1', selling_price, cost_price } = payload;
+      const createdItemRes = await query(
+        `INSERT INTO items (name, section, total_stock, low_stock_threshold, front_display, back_store_room, selling_price, cost_price)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+        [name, section || 'Grocery', parseInt(total_stock, 10) || 0, parseInt(low_stock_threshold, 10) || 5, front_display, back_store_room, parseFloat(selling_price) || 0, parseFloat(cost_price) || 0]
+      );
+      const newItem = createdItemRes.rows[0];
+
+      if (newItem.total_stock > 0) {
+        await query(
+          `INSERT INTO stock_movements 
+           (item_id, user_id, movement_type, quantity_change, old_stock, new_stock, unit_selling_price, unit_cost_price, supplier_or_reason, source)
+           VALUES ($1, $2, 'RECEIVED', $3, 0, $3, $4, $5, $6, 'AI_CONFIRMED')`,
+          [newItem.id, req.user.id, newItem.total_stock, newItem.selling_price, newItem.cost_price, draft.supplier_or_reason || 'Initial product stock']
+        );
+      }
+
+      await query("UPDATE pending_confirmations SET status = 'CONFIRMED' WHERE id = $1", [confirmationId]);
+
+      return res.json({
+        success: true,
+        message: `Confirmed: New product "${newItem.name}" added to catalog with ${newItem.total_stock} initial units in ${newItem.section}.`,
+        item: newItem
+      });
+    }
+
+    // Action Type 2: UPDATE_ITEM (Edit product details/price/location)
+    if (actionType === 'UPDATE_ITEM') {
+      if (req.user.role !== 'MANAGER') {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Only Managers can update product details.' });
+      }
+
+      const targetId = draft.item_id || payload.itemId;
+      const itemRes = await query('SELECT * FROM items WHERE id = $1', [targetId]);
+      if (itemRes.rows.length === 0) {
+        return res.status(404).json({ error: 'ITEM_NOT_FOUND', message: 'Item no longer exists in catalog.' });
+      }
+
+      const cur = itemRes.rows[0];
+      const newName = payload.name !== undefined ? payload.name : cur.name;
+      const newSection = payload.section !== undefined ? payload.section : cur.section;
+      const newSelling = payload.selling_price !== undefined ? parseFloat(payload.selling_price) : parseFloat(cur.selling_price);
+      const newCost = payload.cost_price !== undefined ? parseFloat(payload.cost_price) : parseFloat(cur.cost_price);
+      const newFront = payload.front_display !== undefined ? payload.front_display : cur.front_display;
+      const newBack = payload.back_store_room !== undefined ? payload.back_store_room : cur.back_store_room;
+      const newThreshold = payload.low_stock_threshold !== undefined ? parseInt(payload.low_stock_threshold, 10) : cur.low_stock_threshold;
+
+      await query(
+        `UPDATE items SET name = $1, section = $2, selling_price = $3, cost_price = $4, front_display = $5, back_store_room = $6, low_stock_threshold = $7 WHERE id = $8`,
+        [newName, newSection, newSelling, newCost, newFront, newBack, newThreshold, targetId]
+      );
+
+      // Record price history if prices changed
+      if (newSelling !== parseFloat(cur.selling_price) || newCost !== parseFloat(cur.cost_price)) {
+        await query(
+          `INSERT INTO price_history (item_id, old_selling_price, new_selling_price, old_cost_price, new_cost_price, changed_by_user_id)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [targetId, cur.selling_price, newSelling, cur.cost_price, newCost, req.user.id]
+        );
+      }
+
+      await query("UPDATE pending_confirmations SET status = 'CONFIRMED' WHERE id = $1", [confirmationId]);
+
+      return res.json({
+        success: true,
+        message: `Confirmed: Product "${newName}" details successfully updated.`,
+        item: { id: targetId, name: newName, section: newSection, sellingPrice: newSelling, costPrice: newCost }
+      });
+    }
+
+    // Action Type 3: DELETE_ITEM (Remove product)
+    if (actionType === 'DELETE_ITEM') {
+      if (req.user.role !== 'MANAGER') {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Only Managers can remove products from inventory.' });
+      }
+
+      const targetId = draft.item_id || payload.itemId;
+      const itemRes = await query('SELECT * FROM items WHERE id = $1', [targetId]);
+      if (itemRes.rows.length === 0) {
+        return res.status(404).json({ error: 'ITEM_NOT_FOUND', message: 'Item no longer exists in catalog.' });
+      }
+
+      const deletedName = itemRes.rows[0].name;
+      await query('DELETE FROM items WHERE id = $1', [targetId]);
+      await query("UPDATE pending_confirmations SET status = 'CONFIRMED' WHERE id = $1", [confirmationId]);
+
+      return res.json({
+        success: true,
+        message: `Confirmed: Product "${deletedName}" has been removed from the catalog.`
+      });
+    }
+
+    // Default Action: STOCK_MOVEMENT
     // 5. Concurrency Check: Fetch live fresh item from DB
     const itemRes = await query('SELECT * FROM items WHERE id = $1', [draft.item_id]);
     if (itemRes.rows.length === 0) {

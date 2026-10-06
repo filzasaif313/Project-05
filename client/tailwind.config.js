@@ -7,66 +7,123 @@ export default {
   theme: {
     extend: {
       colors: {
-        // StockSense "After-Hours Stockroom" Palette
+        // StockSense Obsidian Gold & Ember Terminal Palette (Zero Blue, Zero Green, Zero Purple)
+        navy: {
+          DEFAULT: '#0C0A09',  // Warm Pitch Obsidian background
+          base: '#0C0A09',
+          950: '#080706',
+          900: '#0C0A09',
+          850: '#141210',
+          800: '#1C1917',
+        },
+        midnight: {
+          DEFAULT: '#1C1917',  // Dark Charcoal Stone panels / navigation
+          surface: '#1C1917',
+          panel: '#1C1917',
+          card: '#221F1D',
+          elevated: '#292524',
+          border: '#38332E',
+          700: '#44403C',
+          800: '#38332E',
+          850: '#292524',
+          900: '#1C1917',
+          950: '#0C0A09',
+        },
+        electric: {
+          DEFAULT: '#F59E0B',  // Radiant Amber Gold primary actions & active states
+          hover: '#D97706',
+          light: '#FCD34D',
+          dim: '#B45309',
+        },
+        violet: {
+          DEFAULT: '#F97316',  // Sunset Ember / Flame Orange AI & Store Brain accent
+          hover: '#EA580C',
+          light: '#FB923C',
+          dim: '#C2410C',
+        },
+        lavender: {
+          DEFAULT: '#FB923C',  // Warm Apricot secondary accent
+          soft: '#FDBA74',
+          dim: '#EA580C',
+        },
+        offwhite: {
+          DEFAULT: '#FAFAF9',  // Warm Off White primary text
+          soft: '#F5F5F4',
+          muted: '#E7E5E4',
+        },
+        slate: {
+          DEFAULT: '#A8A29E',  // Warm Stone secondary text
+          dim: '#78716C',
+          dark: '#57534E',
+        },
+        softgreen: {
+          DEFAULT: '#FBBF24',  // Sun Gold healthy / success state (no green)
+          light: '#FCD34D',
+          dark: '#D97706',
+        },
+        softred: {
+          DEFAULT: '#EF4444',  // Crimson Red errors / alerts
+          light: '#F87171',
+          dark: '#DC2626',
+        },
+        softamber: {
+          DEFAULT: '#F59E0B',  // Amber warning / threshold
+          light: '#FCD34D',
+          dark: '#D97706',
+        },
+
+        // Backward compatibility aliases mapped to new palette
         ink: {
-          DEFAULT: '#0B0D0C',
-          950: '#0B0D0C', // Deep Ink base
-          900: '#111412',
-          850: '#171A18', // Graphite surfaces
-          800: '#1E221F', // Elevated panels
-          700: '#282D2A', // Borders
-          600: '#383F3B',
+          DEFAULT: '#0C0A09',
+          950: '#0C0A09',
+          900: '#141210',
+          850: '#1C1917',
+          800: '#221F1D',
+          700: '#38332E',
+          600: '#44403C',
         },
         graphite: {
-          DEFAULT: '#171A18',
-          surface: '#171A18',
-          card: '#1D211F',
-          border: '#2A302C',
+          DEFAULT: '#1C1917',
+          surface: '#1C1917',
+          card: '#221F1D',
+          border: '#38332E',
         },
         ivory: {
-          DEFAULT: '#F1EDE3', // Warm Ivory primary text
-          soft: '#DCD7CB',
-          muted: '#A8A295',
-          dim: '#7C776C',
+          DEFAULT: '#FAFAF9',
+          soft: '#F5F5F4',
+          muted: '#A8A29E',
+          dim: '#78716C',
         },
         sage: {
-          DEFAULT: '#8FAF87', // Muted Sage inventory healthy / primary retail accent
-          light: '#A5C49E',
-          dark: '#76946E',
+          DEFAULT: '#FBBF24',
+          light: '#FCD34D',
+          dark: '#D97706',
         },
         copper: {
-          DEFAULT: '#B8794A', // Copper hardware / accent detail
-          light: '#CE8D5D',
-          dark: '#9E653B',
+          DEFAULT: '#F59E0B',
+          light: '#FCD34D',
+          dark: '#D97706',
         },
         amber: {
-          DEFAULT: '#D6A85F', // Soft Amber warning / low stock
-          light: '#E4BC78',
-          dark: '#B88D47',
+          DEFAULT: '#F59E0B',
+          light: '#FCD34D',
+          dark: '#D97706',
         },
         brick: {
-          DEFAULT: '#C65A4A', // Muted Brick critical / out of stock / alerts
-          light: '#D77263',
-          dark: '#A84435',
-        },
-        // Legacy aliases mapped to new palette to preserve working dashboard
-        midnight: {
-          950: '#0B0D0C',
-          900: '#111412',
-          850: '#171A18',
-          800: '#1E221F',
-          700: '#282D2A',
+          DEFAULT: '#EF4444',
+          light: '#F87171',
+          dark: '#DC2626',
         },
         lime: {
-          DEFAULT: '#8FAF87', // Mapped to Muted Sage
-          400: '#A5C49E',
-          500: '#8FAF87',
-          600: '#76946E',
+          DEFAULT: '#FBBF24',
+          400: '#FCD34D',
+          500: '#FBBF24',
+          600: '#D97706',
         },
         cream: {
-          DEFAULT: '#F1EDE3',
-          100: '#F1EDE3',
-          200: '#DCD7CB',
+          DEFAULT: '#FAFAF9',
+          100: '#FAFAF9',
+          200: '#F5F5F4',
         }
       },
       fontFamily: {

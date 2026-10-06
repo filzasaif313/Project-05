@@ -10,8 +10,7 @@ import {
   UtensilsCrossed, 
   LayoutGrid,
   Activity,
-  LogOut,
-  User
+  LogOut
 } from 'lucide-react';
 
 export default function Header({ 
@@ -20,7 +19,7 @@ export default function Header({
   onToggleAiDrawer, 
   isAiDrawerOpen 
 }) {
-  const { user, isManager, isStaff, logout } = useAuth();
+  const { user, isManager, logout } = useAuth();
 
   const sections = [
     { id: 'All', label: 'All Store', icon: LayoutGrid },
@@ -31,45 +30,49 @@ export default function Header({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0B0D0C]/90 backdrop-blur-md border-b border-white/[0.08] px-4 lg:px-8 py-3 transition-colors">
+    <header className="sticky top-0 z-40 bg-[#0C0A09]/95 backdrop-blur-md border-b border-[#38332E] px-4 lg:px-8 py-3 transition-colors">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         
-        {/* Brand & Mall Live Identity */}
+        {/* Brand & Terminal Live Identity */}
         <div className="flex items-center gap-3 w-full md:w-auto justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#171A18] border border-white/10 flex items-center justify-center shadow-inner relative group">
-              <span className="w-2 h-2 rounded-full bg-[#8FAF87] absolute -top-0.5 -right-0.5 animate-pulse" />
-              <Activity className="w-4 h-4 text-[#8FAF87]" />
+            <div className="w-9 h-9 rounded-xl bg-[#1C1917] border border-[#38332E] flex items-center justify-center relative group shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#F59E0B] absolute -top-0.5 -right-0.5 animate-pulse" />
+              <Activity className="w-4 h-4 text-[#F59E0B]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base tracking-tight text-[#F1EDE3]">
+                <span className="font-extrabold text-base tracking-tight text-[#FAFAF9]">
                   StockSense
                 </span>
-                <span className="px-1.5 py-0.2 text-[9px] font-mono font-bold tracking-wider rounded bg-[#8FAF87]/15 text-[#8FAF87] border border-[#8FAF87]/30 uppercase">
-                  STORE PULSE
+                <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold tracking-wider rounded bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30 uppercase">
+                  TERMINAL
                 </span>
               </div>
-              <p className="text-[11px] text-[#A8A295] font-medium flex items-center gap-1.5 font-mono">
+              <p className="text-[11px] text-[#A8A29E] font-medium flex items-center gap-1.5 font-mono">
                 <span>Nowshera Shopping Mall</span>
-                <span className="inline-block w-1 h-1 rounded-full bg-white/20" />
-                <span className="text-[#8FAF87]">PostgreSQL DB</span>
+                <span className="inline-block w-1 h-1 rounded-full bg-[#A8A29E]/30" />
+                <span className="text-[#FBBF24]">Live DB Sync</span>
               </p>
             </div>
           </div>
 
-          {/* Mobile AI button */}
+          {/* Mobile AI launcher */}
           <button 
             onClick={onToggleAiDrawer}
-            className="md:hidden flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#171A18] border border-[#8FAF87]/30 text-[#8FAF87] text-xs font-semibold"
+            className={`md:hidden flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-semibold font-mono transition-all ${
+              isAiDrawerOpen
+                ? 'bg-[#F97316] text-[#FAFAF9] border-[#F97316]'
+                : 'bg-[#1C1917] border-[#F97316]/40 text-[#FB923C]'
+            }`}
           >
-            <Bot className="w-3.5 h-3.5 text-[#8FAF87]" />
+            <Bot className="w-3.5 h-3.5 text-[#FB923C]" />
             <span>Store Brain</span>
           </button>
         </div>
 
-        {/* Department Quick Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full no-scrollbar">
+        {/* Department Quick Filter Control */}
+        <div className="flex items-center gap-1 bg-[#1C1917]/80 p-1 rounded-xl border border-[#38332E] overflow-x-auto max-w-full no-scrollbar">
           {sections.map(sec => {
             const Icon = sec.icon;
             const isSelected = selectedSection === sec.id;
@@ -77,35 +80,35 @@ export default function Header({
               <button
                 key={sec.id}
                 onClick={() => setSelectedSection(sec.id)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
                   isSelected 
-                    ? 'bg-[#1E221F] text-[#F1EDE3] border border-[#8FAF87]/40 shadow-sm shadow-black/40' 
-                    : 'bg-[#171A18]/60 text-[#A8A295] hover:text-[#F1EDE3] hover:bg-[#171A18] border border-white/[0.05]'
+                    ? 'bg-[#292524] text-[#FAFAF9] border border-[#F59E0B]/40 shadow-sm' 
+                    : 'text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#292524]/50 border border-transparent'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-[#8FAF87]' : 'text-[#7C776C]'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-[#F59E0B]' : 'text-[#78716C]'}`} />
                 <span>{sec.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* User Identity, Role Indicator & AI Launcher */}
+        {/* User Identity, Role Indicator & Core Store Brain Launcher */}
         <div className="flex items-center gap-2.5 w-full md:w-auto justify-end">
           
           {/* Authenticated User Profile Pill */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#171A18] border border-white/10 text-xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1C1917] border border-[#38332E] text-xs">
             {isManager ? (
-              <ShieldCheck className="w-3.5 h-3.5 text-[#8FAF87]" />
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FBBF24]" />
             ) : (
-              <UserCheck className="w-3.5 h-3.5 text-[#D6A85F]" />
+              <UserCheck className="w-3.5 h-3.5 text-[#A8A29E]" />
             )}
             
             <div className="flex flex-col">
-              <span className="font-bold text-[#F1EDE3] leading-none text-[11px]">
+              <span className="font-bold text-[#FAFAF9] leading-none text-[11px]">
                 {user?.name || 'Staff User'}
               </span>
-              <span className="text-[9px] font-mono text-[#A8A295] leading-none mt-0.5">
+              <span className="text-[9px] font-mono text-[#A8A29E] leading-none mt-0.5">
                 {isManager ? 'General Manager' : 'Store Staff'}
               </span>
             </div>
@@ -113,24 +116,24 @@ export default function Header({
             <button
               onClick={logout}
               title="Sign Out of Terminal"
-              className="ml-1 p-1 rounded-md text-[#7C776C] hover:text-[#C65A4A] hover:bg-white/5 transition"
+              className="ml-1 p-1 rounded-md text-[#78716C] hover:text-[#EF4444] hover:bg-white/5 transition"
             >
               <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Desktop "Store Brain" AI Button */}
+          {/* Desktop "Store Brain" Core Feature Launcher */}
           <button
             onClick={onToggleAiDrawer}
             className={`hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all border ${
               isAiDrawerOpen 
-                ? 'bg-[#8FAF87] text-[#0B0D0C] border-[#8FAF87] font-bold shadow-md shadow-[#8FAF87]/20' 
-                : 'bg-[#171A18] text-[#F1EDE3] hover:border-[#8FAF87]/40 hover:bg-[#1E221F] border-white/10'
+                ? 'bg-[#F97316] text-[#FAFAF9] border-[#F97316] shadow-md shadow-[#F97316]/30' 
+                : 'bg-[#1C1917] text-[#FB923C] hover:text-[#FAFAF9] hover:border-[#F97316]/60 hover:bg-[#292524] border-[#F97316]/35 shadow-sm'
             }`}
           >
-            <Bot className={`w-3.5 h-3.5 ${isAiDrawerOpen ? 'text-[#0B0D0C]' : 'text-[#8FAF87]'}`} />
+            <Bot className={`w-3.5 h-3.5 ${isAiDrawerOpen ? 'text-[#FAFAF9]' : 'text-[#FB923C]'}`} />
             <span>Store Brain</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8FAF87] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FB923C] animate-pulse" />
           </button>
         </div>
 

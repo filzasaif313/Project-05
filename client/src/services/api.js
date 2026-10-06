@@ -125,12 +125,43 @@ export const api = {
     return res.json();
   },
 
-  // AI Chat
-  async sendChatMessage(message, sessionId, simulatedFailure = false) {
+  // AI Chat & Persistent History
+  async sendChatMessage(message, sessionId, simulatedFailure = false, conversationId = null) {
     const res = await fetch(`${API_BASE}/chat`, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ message, sessionId, simulatedFailure })
+      body: JSON.stringify({ message, sessionId, simulatedFailure, conversationId })
+    });
+    return res.json();
+  },
+
+  async getChatConversations() {
+    const res = await fetch(`${API_BASE}/chat/conversations`, {
+      headers: getAuthHeaders()
+    });
+    return res.json();
+  },
+
+  async createChatConversation(title = 'New Conversation') {
+    const res = await fetch(`${API_BASE}/chat/conversations`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ title })
+    });
+    return res.json();
+  },
+
+  async getChatConversation(id) {
+    const res = await fetch(`${API_BASE}/chat/conversations/${id}`, {
+      headers: getAuthHeaders()
+    });
+    return res.json();
+  },
+
+  async deleteChatConversation(id) {
+    const res = await fetch(`${API_BASE}/chat/conversations/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
     });
     return res.json();
   },
@@ -141,3 +172,4 @@ export const api = {
     return res.json();
   }
 };
+

@@ -52,9 +52,9 @@ app.get('/', (req, res) => {
 async function startServer() {
   try {
     await initializeDatabase();
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`\n======================================================`);
-      console.log(`🚀 StockSense Central Server running on http://localhost:${PORT}`);
+      console.log(`🚀 StockSense Central Server running on http://127.0.0.1:${PORT}`);
       console.log(`🏬 Ready for Nowshera Shopping Mall Operations`);
       console.log(`======================================================\n`);
     });
