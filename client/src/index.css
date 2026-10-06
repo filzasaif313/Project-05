@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0B0D0C;
+  color: #F1EDE3;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* StockSense After-Hours Surfaces */
+.graphite-surface {
+  background-color: #171A18;
+  border: 1px solid rgba(241, 237, 227, 0.08);
+}
+
+.graphite-surface-elevated {
+  background-color: #1E221F;
+  border: 1px solid rgba(241, 237, 227, 0.12);
+}
+
+.graphite-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.graphite-hover:hover {
+  border-color: rgba(143, 175, 135, 0.35);
+  transform: translateY(-1.5px);
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* Glass Panels with subtle warm ivory tint */
+.glass-panel {
+  background: rgba(23, 26, 24, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(241, 237, 227, 0.08);
+}
+
+.glass-panel-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(30, 34, 31, 0.96);
+  border-color: rgba(143, 175, 135, 0.35);
+  transform: translateY(-1.5px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0D0C;
+}
+::-webkit-scrollbar-thumb {
+  background: #282D2A;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #383F3B;
+}
+
+/* Sage & Copper subtle accent glows */
+.sage-glow {
+  box-shadow: 0 0 20px -3px rgba(143, 175, 135, 0.22);
+}
+
+.copper-glow {
+  box-shadow: 0 0 20px -3px rgba(184, 121, 74, 0.25);
+}
+
+/* Store Pulse Ring animations */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+/* Number ticker transition */
+@keyframes number-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); color: #8FAF87; }
+  100% { transform: scale(1); }
+}
+
+.animate-pop {
+  animation: number-pop 0.4s ease-out;
+}

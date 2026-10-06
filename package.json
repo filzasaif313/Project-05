@@ -1,0 +1,12 @@
+{
+  "name": "stocksense",
+  "version": "1.0.0",
+  "private": true,
+  "description": "StockSense: AI Inventory for Nowshera Shopping Mall",
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "init-db": "npm --prefix server run init-db",
+    "seed": "npm --prefix server run seed"
+  }
+}
